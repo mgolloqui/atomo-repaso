@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma EVAU Química - Estructura Atómica y Tabla Periódica</title>
+    <!-- MathJax para el renderizado perfecto de fórmulas matemáticas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2b6cb0;
+            --secondary: #2c7a7b;
+            --accent: #dd6b20;
+            --bg-light: #f7fafc;
+            --card-bg: #ffffff;
+            --text-dark: #2d3748;
+            --border-color: #e2e8f0;
+            --success: #38a169;
+            --warning: #d69e2e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background-color: var(--primary);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, border-bottom 0.3s;
+        }
+
+        .nav-btn:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .nav-btn.active {
+            background-color: var(--secondary);
+            border-bottom: 4px solid var(--accent);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 1.8rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.4rem;
+        }
+
+        h3 {
+            color: var(--primary-light);
+            margin: 1.2rem 0 0.6rem 0;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+        }
+
+        .evau-tip {
+            background-color: #ebf8ff;
+            border-left: 4px solid var(--primary-light);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .evau-tip strong {
+            color: var(--primary);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: #edf2f7;
+            color: var(--primary);
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Tool Grid */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button.btn-calc {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        button.btn-calc:hover {
+            background-color: #234e52;
+        }
+
+        .result-box {
+            background-color: #f0fff4;
+            border: 1px solid #c6f6d5;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* Accordion PAU */
+        .accordion-item {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            margin-bottom: 0.8rem;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            background-color: #edf2f7;
+            padding: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-header:hover {
+            background-color: #e2e8f0;
+        }
+
+        .accordion-content {
+            padding: 1rem;
+            display: none;
+            background-color: white;
+        }
+
+        /* Grid Tabla Periódica Simplificada */
+        .ptable-grid {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            gap: 2px;
+            overflow-x: auto;
+            padding: 10px;
+            background: #2d3748;
+            border-radius: 8px;
+        }
+
+        .elem-box {
+            background: #4a5568;
+            color: white;
+            padding: 6px 2px;
+            text-align: center;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .elem-box:hover {
+            transform: scale(1.15);
+            z-index: 10;
+            background: var(--accent);
+        }
+
+        .elem-s { background-color: #4299e1; }
+        .elem-p { background-color: #48bb78; }
+        .elem-d { background-color: #ed8936; }
+        .elem-f { background-color: #9f7aea; }
+
+        .elem-box .symbol {
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+
+        .empty-box {
+            background: transparent;
+        }
+
+        /* Quick Quiz */
+        .quiz-option {
+            display: block;
+            background: #edf2f7;
+            padding: 0.7rem;
+            margin: 0.4rem 0;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        .quiz-option:hover {
+            background: #e2e8f0;
+        }
+
+        .quiz-option.correct {
+            background: #c6f6d5;
+            border-color: #38a169;
+        }
+
+        .quiz-option.incorrect {
+            background: #fed7d7;
+            border-color: #e53e3e;
+        }
+
+        @media(max-width: 768px) {
+            header h1 { font-size: 1.6rem; }
+            .nav-btn { padding: 0.8rem; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Química 2º Bachillerato: Estructura Atómica y Tabla Periódica</h1>
+        <p>Preparación Integral EVAU / PAU — Teoría, Calculadoras Interactivas y Banco de Exámenes</p>
+    </header>
+
+    <nav>
+        <button class="nav-btn active" onclick="switchTab('teoria')">📖 Teoría Completa EVAU</button>
+        <button class="nav-btn" onclick="switchTab('calculadoras')">⚡ Calculadoras y Herramientas</button>
+        <button class="nav-btn" onclick="switchTab('pau')">🎯 Banco Cuestiones EVAU</button>
+        <button class="nav-btn" onclick="switchTab('tabla')">📊 Tabla Periódica e Iones</button>
+        <button class="nav-btn" onclick="switchTab('quiz')">✍️ Autoevaluación Rápida</button>
+    </nav>
+
+    <div class="container">
+
+        <!-- TAB 1: TEORÍA COMPLETA -->
+        <div id="teoria" class="tab-content active">
+            <div class="card">
+                <h2>Bloque 1: Modelos Atómicos e Insuficiencia Clásica</h2>
+                <p>Evolución conceptual desde la hipótesis atómica hasta los cimientos de la física cuántica.</p>
+                
+                <h3>1.1 Evolución Histórica de los Modelos Atómicos</h3>
+                <ul>
+                    <li><strong>Dalton (s. XIX):</strong> Átomos como esferas indivisibles e inmutables, iguales para un mismo elemento. Explicaba las leyes ponderales de la química.</li>
+                    <li><strong>Thomson (1904):</strong> Modelo del "pastel de pasas". Descubrimiento del electrón. El átomo es una esfera fluida positiva con electrones incrustados para mantener la neutralidad eléctrica.</li>
+                    <li><strong>Rutherford (1911):</strong> Experimento de la lámina de oro (Geiger y Marsden). Descubre el <em>núcleo atómico</em> muy pequeño, denso y positivo, y una <em>corteza</em> donde giran los electrones.</li>
+                </ul>
+
+                <div class="evau-tip">
+                    <strong>💡 Imprescindible EVAU — Limitaciones del Modelo de Rutherford:</strong>
+                    <ol>
+                        <li><strong>Inestabilidad del átomo clásico:</strong> Según la electrodinámica clásica (Maxwell), una carga acelerada en movimiento circular emite radiación de forma continua, perdiendo energía. El electrón debería precipitarse en espiral contra el núcleo. El átomo colapsaría[cite: 3].</li>
+                        <li><strong>Espectros atómicos discontinuos:</strong> La física clásica predecía un espectro continuo de emisión. Sin embargo, los gases rarificados excitados emiten luz discontinua, mostrando únicamente líneas espectrales discretas con frecuencias características $f$ ó $\lambda$[cite: 3].</li>
+                    </ol>
+                </div>
+
+                <h3>1.2 Espectros Atómicos y Ecuación de Rydberg</h3>
+                <p>Para el átomo de hidrógeno, las líneas espectrales se agrupan en series con ajuste matemático mediante la <strong>fórmula empírica de Rydberg</strong>[cite: 3]:</p>
+                $$\frac{1}{\lambda} = R_H \left( \frac{1}{n_i^2} - \frac{1}{n_j^2} \right) \quad \text{con } n_j > n_i, \quad R_H = 1.097 \cdot 10^7 \text{ m}^{-1}$$
+                <ul>
+                    <li><strong>Lyman:</strong> $n_i = 1$ (Zona Ultravioleta)[cite: 3].</li>
+                    <li><strong>Balmer:</strong> $n_i = 2$ (Zona Visible/UV cercano)[cite: 3].</li>
+                    <li><strong>Paschen:</strong> $n_i = 3$ (Zona Infrarroja)[cite: 3].</li>
+                    <li><strong>Brackett:</strong> $n_i = 4$, <strong>Pfund:</strong> $n_i = 5$, <strong>Humphreys:</strong> $n_i = 6$ (Infrarrojo)[cite: 3].</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Bloque 2: Orígenes de la Teoría Cuántica</h2>
+
+                <h3>2.1 Radiación del Cuerpo Negro y Hipótesis de Planck (1900)</h3>
+                <p>La física clásica (Ley Rayleigh-Jeans) predecía una emisión infinita de energía a frecuencias elevadas (altas $f$, bajas $\lambda$), conocida como la <em>"Catástrofe Ultravioleta"</em>[cite: 3].</p>
+                <p>Max Planck resolvió la discrepancia postulando que los osciladores atómicos de la materia no intercambian energía de forma continua, sino discontinua en forma de "paquetes" o <strong>cuantos</strong> de energía[cite: 3]:</p>
+                $$E = n \cdot h \cdot f \quad (n = 1, 2, 3, \dots)$$
+                <p>Donde $h = 6.63 \cdot 10^{-34} \text{ J}\cdot\text{s}$ es la <strong>constante de Planck</strong>[cite: 3].</p>
+
+                <h3>2.2 Efecto Fotoeléctrico (Einstein, 1905)</h3>
+                <p>Consiste en la emisión de electrones por una superficie metálica al ser iluminada con radiación electromagnética de frecuencia suficiente[cite: 3].</p>
+                <ul>
+                    <li><strong>Hechos experimentales sin explicación clásica:</strong> Existe una frecuencia umbral ($f_0$), el efecto es instantáneo, y la energía cinética de los fotoelectrones depende de la frecuencia de la luz incidente, no de su intensidad[cite: 3].</li>
+                    <li><strong>Explicación de Einstein:</strong> La luz está formada por cuantos indivisibles de energía denominados <strong>fotones</strong>, con energía $E_{fotón} = h f$[cite: 3].</li>
+                </ul>
+                <div class="evau-tip">
+                    <strong>Ecuación de Einstein del Efecto Fotoeléctrico:</strong>
+                    $$E_{\text{fotón}} = W_0 + E_{c,\text{máx}} \implies h f = h f_0 + \frac{1}{2} m_e v_{\text{máx}}^2$$
+                    <ul>
+                        <li>$W_0 = h f_0$: Trabajo de extracción o función de trabajo propia de cada metal[cite: 3].</li>
+                        <li>$f_0$: Frecuencia umbral ($f_0 = c / \lambda_0$)[cite: 3].</li>
+                        <li>$E_{c,\text{máx}} = e \cdot V_{\text{frenado}}$: Energía cinética máxima medible con el potencial de frenado[cite: 3].</li>
+                    </ul>
+                </div>
+
+                <h3>2.3 Modelo Atómico de Bohr (1913)</h3>
+                <p>Aplica las ideas cuánticas de Planck y Einstein al átomo de hidrógeno[cite: 3]. Postulados:</p>
+                <ol>
+                    <li>El electrón se mueve en órbitas circulares estacionarias sin emitir radiación electromagnética.</li>
+                    <li>Sólo están permitidas aquellas órbitas donde el momento angular del electrón está cuantizado: $L = m_e v r = n \frac{h}{2\pi}$ ($n = 1, 2, 3...$)[cite: 3].</li>
+                    <li>La radiación sólo se absorbe o se emite cuando un electrón salta de una órbita a otra: $\Delta E = E_j - E_i = h f$[cite: 3].</li>
+                </ol>
+                <p><strong>Limitaciones del modelo de Bohr:</strong> No explicaba espectros polielectrónicos, ni el desdoblamiento de líneas en presencia de campos magnéticos (Efecto Zeeman) o eléctricos (Efecto Stark)[cite: 3].</p>
+
+                <h3>2.4 Dualidad Onda-Corpúsculo e Incertidumbre</h3>
+                <ul>
+                    <li><strong>Hipótesis de De Broglie (1924):</strong> Toda partícula en movimiento de masa $m$ y velocidad $v$ tiene asociada una longitud de onda[cite: 3]:
+                        $$\lambda = \frac{h}{p} = \frac{h}{m v}$$
+                        Confirmado experimentalmente por la difracción de electrones de Davisson y Germer (1927)[cite: 3].</li>
+                    <li><strong>Principio de Incertidumbre de Heisenberg (1927):</strong> Imposibilidad de determinar simultáneamente y con precisión arbitraria la posición y el momento lineal (o la energía y el tiempo) de una partícula subatómica[cite: 3, 4]:
+                        $$\Delta x \cdot \Delta p \ge \frac{h}{4\pi}$$
+                        Esto elimina conceptualmente la noción clásica de <em>órbita</em> definida y da paso al concepto cuántico de <em>orbital</em>[cite: 3].</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Bloque 3: Modelo Cuántico Actual y Orbitales</h2>
+                <p>Basado en la ecuación de onda de Schrödinger (1926) y la interpretación probabilística de Max Born ($|\Psi|^2$ representatividad de densidad de probabilidad)[cite: 3].</p>
+                
+                <h3>3.1 Números Cuánticos</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Símbolo</th>
+                            <th>Nombre</th>
+                            <th>Significado Físico</th>
+                            <th>Valores Permitidos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>n</strong></td>
+                            <td>Principal</td>
+                            <td>Nivel de energía / Tamaño del orbital</td>
+                            <td>$1, 2, 3, 4, \dots$</td>
+                        </tr>
+                        <tr>
+                            <td><strong>l</strong></td>
+                            <td>Secundario / Azimutal</td>
+                            <td>Forma del orbital (subnivel s, p, d, f)</td>
+                            <td>$0, 1, \dots, n-1$</td>
+                        </tr>
+                        <tr>
+                            <td><strong>m<sub>l</sub></strong></td>
+                            <td>Magnético</td>
+                            <td>Orientación espacial del orbital</td>
+                            <td>$-l, \dots, 0, \dots, +l$</td>
+                        </tr>
+                        <tr>
+                            <td><strong>m<sub>s</sub></strong></td>
+                            <td>Spin (espín)</td>
+                            <td>Momento angular intrínseco del electrón</td>
+                            <td>$+\frac{1}{2}, -\frac{1}{2}$</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="evau-tip">
+                    <strong>💡 Reglas de Llenado Electrónico (Estructura en la EVAU):</strong>
+                    <ol>
+                        <li><strong>Principio de Aufbau / Construcción:</strong> Los electrones ocupan los orbitales en orden creciente de energía según la regla de Madelung ($n+l$ creciente)[cite: 3].</li>
+                        <li><strong>Principio de Exclusión de Pauli:</strong> En un mismo átomo no pueden existir dos electrones con los 4 números cuánticos iguales[cite: 3, 4]. Cada orbital aloja como máximo 2 electrones con espines opuestos[cite: 3].</li>
+                        <li><strong>Regla de Máxima Multiplicidad de Hund:</strong> Al llenar orbitales degenerados (misma energía, ej. $p$, $d$, $f$), los electrones se distribuyen desapareándose al máximo con espines paralelos[cite: 3, 4].</li>
+                    </ol>
+                </div>
+
+                <h3>Excepciones Frecuentes en EVAU (Período 4)</h3>
+                <ul>
+                    <li><strong>Cromo ($Z=24$):</strong> Mantiene configuración más estable por subcapa $d$ semillena: $\text{[Ar]} \, 4s^1 3d^5$ (en lugar de $4s^2 3d^4$)[cite: 3].</li>
+                    <li><strong>Cobre ($Z=29$):</strong> Mantiene subcapa $d$ completamente llena: $\text{[Ar]} \, 4s^1 3d^{10}$ (en lugar de $4s^2 3d^9$)[cite: 3].</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Bloque 4: Sistema Periódico y Propiedades Periódicas</h2>
+                <p>Ordenación actual introducida por Moseley basada en el número atómico ($Z$) creciente[cite: 3].</p>
+
+                <h3>Razonamiento Científico exigido en EVAU para Justificar Propiedades:</h3>
+                
+                <h4>1. Carga Nuclear Efectiva ($Z_{ef}$) y Efecto Pantalla ($S$)</h4>
+                <p>$$Z_{ef} = Z - S$$</p>
+                <p>Al avanzar en un mismo período hacia la derecha, aumentan los protones ($Z$) mientras que el apantallamiento ($S$) generado por capas internas se mantiene casi constante. La atracción internuclear aumenta y los electrones externos son contraídos[cite: 3].</p>
+
+                <h4>2. Radio Atómico e Iónico</h4>
+                <ul>
+                    <li><strong>En un Grupo:</strong> Aumenta al descender al aumentar el número cuántico principal $n$ (capas electrónicas más distantes del núcleo)[cite: 3].</li>
+                    <li><strong>En un Período:</strong> Disminuye hacia la derecha debido al aumento de la $Z_{ef}$ que atrae con más fuerza la nube electrónica[cite: 3].</li>
+                    <li><strong>Cationes ($X^{n+}$):</strong> Tienen un radio menor que su átomo neutro $X$ (se pierden electrones externos y disminuye repulsión interelectrónica)[cite: 3, 4].</li>
+                    <li><strong>Aniones ($X^{n-}$):</strong> Tienen un radio mayor que su átomo neutro $X$ (se añaden electrones, aumenta la repulsión interelectrónica y la nube se expande)[cite: 3, 4].</li>
+                    <li><strong>Especies Isoelectrónicas:</strong> Mismo número de electrones. A mayor número atómico $Z$ (más protones), mayor atracción nuclear y menor radio iónico.</li>
+                </ul>
+
+                <h4>3. Energía de Ionización ($E_i$)</h4>
+                <p>Energía mínima requerida para extraer un electrón de un átomo neutro en estado gaseoso y fundamental: $X(g) + E_i \rightarrow X^+(g) + e^-$[cite: 3].</p>
+                <ul>
+                    <li>Disminuye al bajar en un grupo (radio mayor, electrón menos atraído)[cite: 3].</li>
+                    <li>Aumenta al avanzar hacia la derecha en un período (radio menor, $Z_{ef}$ mayor)[cite: 3].</li>
+                </ul>
+
+                <h4>4. Afinidad Electrónica ($AE$) y Electronegatividad</h4>
+                <ul>
+                    <li><strong>Afinidad Electrónica:</strong> Energía implicada al añadir un electrón a un átomo gaseoso: $X(g) + e^- \rightarrow X^-(g)$[cite: 3]. Aumenta en módulo de izquierda a derecha y de abajo hacia arriba[cite: 3].</li>
+                    <li><strong>Electronegatividad:</strong> Tendencia relativa de un átomo a atraer la densidad electrónica del enlace covalente compartida con otro átomo[cite: 3]. Máximo en la esquina superior derecha (Flúor) y mínimo en la inferior izquierda (Cesio/Francio)[cite: 3]. Los gases nobles se consideran sin electronegatividad[cite: 3].</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TAB 2: CALCULADORAS INTERACTIVAS -->
+        <div id="calculadoras" class="tab-content">
+            <div class="tool-grid">
+                
+                <!-- Herramienta 1: Configuración Electrónica -->
+                <div class="card">
+                    <h2>1. Generador de Configuración y N. Cuánticos</h2>
+                    <div class="form-group">
+                        <label for="inputZ">Número Atómico (Z) o Elemento (1 - 36):</label>
+                        <input type="number" id="inputZ" min="1" max="36" value="17">
+                    </div>
+                    <button class="btn-calc" onclick="calcularConfiguracion()">Generar Configuración</button>
+
+                    <div id="resConfig" class="result-box">
+                        <p><strong>Elemento:</strong> <span id="outNombre">-</span></p>
+                        <p><strong>Configuración Completa:</strong> <span id="outConfig">-</span></p>
+                        <p><strong>Configuración Abreviada:</strong> <span id="outAbrev">-</span></p>
+                        <p><strong>Ubicación:</strong> Período <span id="outPeriodo">-</span>, Grupo <span id="outGrupo">-</span> (Bloque <span id="outBloque">-</span>)</p>
+                        <p><strong>Nº Cuánticos e⁻ diferenciador:</strong> <span id="outNC">-</span></p>
+                    </div>
+                </div>
+
+                <!-- Herramienta 2: Efecto Fotoeléctrico -->
+                <div class="card">
+                    <h2>2. Calculadora de Efecto Fotoeléctrico</h2>
+                    <div class="form-group">
+                        <label for="inputW0">Trabajo de Extracción $W_0$ (en eV):</label>
+                        <input type="number" id="inputW0" step="0.1" value="2.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLambda">Longitud de onda radiación $\lambda$ (en nm):</label>
+                        <input type="number" id="inputLambda" value="400">
+                    </div>
+                    <button class="btn-calc" onclick="calcularFotoelectrico()">Calcular Magnitudes</button>
+
+                    <div id="resFoto" class="result-box">
+                        <p><strong>Energía Fotón Incidente:</strong> <span id="outEfot">-</span> J (<span id="outEfotEv">-</span> eV)</p>
+                        <p><strong>Frecuencia Umbral ($f_0$):</strong> <span id="outF0">-</span> Hz</p>
+                        <p><strong>Emisión de Fotoelectrones:</strong> <span id="outEmision">-</span></p>
+                        <p><strong>E. Cinética Máxima ($E_{c,\text{máx}}$):</strong> <span id="outEc">-</span> J (<span id="outEcEv">-</span> eV)</p>
+                        <p><strong>Velocidad Máxima ($v_{\text{máx}}$):</strong> <span id="outVel">-</span> m/s</p>
+                    </div>
+                </div>
+
+                <!-- Herramienta 3: Transición Rydberg / Bohr -->
+                <div class="card">
+                    <h2>3. Espectro y Salto Cuántico de Bohr</h2>
+                    <div class="form-group">
+                        <label for="inputN1">Nivel inicial ($n_i$):</label>
+                        <input type="number" id="inputN1" min="1" max="7" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputN2">Nivel final ($n_j$):</label>
+                        <input type="number" id="inputN2" min="1" max="7" value="3">
+                    </div>
+                    <button class="btn-calc" onclick="calcularRydberg()">Calcular Salto</button>
+
+                    <div id="resRydberg" class="result-box">
+                        <p><strong>Proceso:</strong> <span id="outProceso">-</span></p>
+                        <p><strong>Serie Espectral:</strong> <span id="outSerie">-</span></p>
+                        <p><strong>Diferencia de Energía ($\Delta E$):</strong> <span id="outDeltaE">-</span> J (<span id="outDeltaEEv">-</span> eV)</p>
+                        <p><strong>Energía por mol de fotones:</strong> <span id="outEmol">-</span> kJ/mol</p>
+                        <p><strong>Longitud de Onda ($\lambda$):</strong> <span id="outLambdaRyd">-</span> nm</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB 3: BANCO DE PREGUNTAS PAU/EVAU -->
+        <div id="pau" class="tab-content">
+            <div class="card">
+                <h2>Cuestiones de Examen EVAU / PAU Oficiales Resueltas</h2>
+                <p>Colección de ejercicios procedentes de las pruebas reales ordenados por tipología[cite: 4]. Haz clic para desplegar el razonamiento completo exigido por los correctores[cite: 4].</p>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        📍 2026-Ordinaria 2B: Transición, Configuración e Isótopos (EVAU)
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Cuestión:</strong> La configuración electrónica de un elemento X es $\text{[Ne]}\,n s^1$[cite: 4].<br>
+                        a) Indique el valor de "n", el nombre y símbolo si pertenece al período 3[cite: 4].<br>
+                        b) Calcule la energía en eV asociada a la transición del electrón más externo si absorbe una $\lambda = 766.5 \text{ nm}$[cite: 4].</p>
+                        <hr><br>
+                        <p><strong>Solución Desarrollada:</strong><br>
+                        a) Si está en el 3er período, $n=3$. La configuración es $1s^2 2s^2 2p^6 3s^1$, correspondiendo a $Z=11$, el <strong>Sodio (Na)</strong>, grupo 1 (alcalinos)[cite: 3, 4].<br>
+                        b) Calculamos la energía del fotón absorbido[cite: 4]:
+                        $$E = h \cdot f = \frac{h \cdot c}{\lambda} = \frac{(6.626 \cdot 10^{-34} \text{ J s}) \cdot (3.00 \cdot 10^8 \text{ m/s})}{766.5 \cdot 10^{-9} \text{ m}} = 2.593 \cdot 10^{-19} \text{ J}$$
+                        Pasando a eV[cite: 4]:
+                        $$E(\text{eV}) = \frac{2.593 \cdot 10^{-19} \text{ J}}{1.602 \cdot 10^{-19} \text{ J/eV}} = 1.62 \text{ eV}$$</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        📍 2025-Ordinaria 2A: Combinación de Números Cuánticos Validados
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Cuestión:</strong> Justifique si son posibles o no las siguientes combinaciones de números cuánticos $(n, l, m_l, m_s)$[cite: 4]:<br>
+                        1. $(2, 1, 0, +1/2)$<br>
+                        2. $(3, 0, 1, -1/2)$<br>
+                        3. $(3, 2, 0, +1/2)$<br>
+                        4. $(4, 4, 0, +1/2)$</p>
+                        <hr><br>
+                        <p><strong>Solución Desarrollada:</strong><br>
+                        1. <strong>Posible.</strong> Para $n=2$, $l$ puede ser $0, 1$. Al ser $l=1$, $m_l$ puede variar entre $-1, 0, +1$. Describe un electrón en un orbital $2p$[cite: 3, 4].<br>
+                        2. <strong>Imposible.</strong> Si $l=0$ (subnivel $s$), el único valor permitido para $m_l$ es $0$. Por tanto $m_l=1$ viola las reglas[cite: 3, 4].<br>
+                        3. <strong>Posible.</strong> Describe un electrón en un subnivel $3d$ ($n=3, l=2, m_l=0$)[cite: 3, 4].<br>
+                        4. <strong>Imposible.</strong> El valor permisible para $l$ va desde $0$ hasta $n-1$. Para $n=4$, $l$ máximo es $3$ (subnivel $f$). No existe $l=4$ ocupado en estado fundamental[cite: 3, 4].</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        📍 2024-Extraordinaria A1: Comparación de Radios Iónicos e Isoelectrónicos
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Cuestión:</strong> Compare y ordene justificadamente el tamaño de los iones más estables formados por los elementos $A \,(Z=11)$, $B \,(Z=12)$ y $C \,(Z=17)$[cite: 4].</p>
+                        <hr><br>
+                        <p><strong>Solución Desarrollada:</strong><br>
+                        - $A(Z=11, \text{Na}): 1s^2 2s^2 2p^6 3s^1 \rightarrow \text{Ion estable: } \text{Na}^+$ ($10\,e^-$)[cite: 4].<br>
+                        - $B(Z=12, \text{Mg}): 1s^2 2s^2 2p^6 3s^2 \rightarrow \text{Ion estable: } \text{Mg}^{2+}$ ($10\,e^-$)[cite: 4].<br>
+                        - $C(Z=17, \text{Cl}): 1s^2 2s^2 2p^6 3s^2 3p^5 \rightarrow \text{Ion estable: } \text{Cl}^-$ ($18\,e^-$)[cite: 4].<br><br>
+                        <strong>Comparación:</strong><br>
+                        1. $\text{Cl}^-$ posee $n=3$ capas ocupadas ($18\,e^-$), por lo que su radio es significativamente mayor que el de $\text{Na}^+$ y $\text{Mg}^{2+}$ (que solo tienen $n=2$ capas, $10\,e^-$)[cite: 3, 4].<br>
+                        2. Entre $\text{Na}^+$ y $\text{Mg}^{2+}$ (especies <strong>isoelectrónicas</strong> con $10\,e^-$), el $\text{Mg}^{2+}$ tiene mayor número atómico ($Z=12$ frente a $Z=11$)[cite: 4]. Su mayor carga nuclear ejerce una atracción eléctrica más intensa sobre los 10 electrones, contrayendo el radio[cite: 3, 4].<br><br>
+                        <strong>Orden decreciente de radio:</strong> $\text{Cl}^- > \text{Na}^+ > \text{Mg}^{2+}$[cite: 4].</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB 4: TABLA PERIÓDICA INTERACTIVA -->
+        <div id="tabla" class="tab-content">
+            <div class="card">
+                <h2>Tabla Periódica Interactiva (Primeros 36 Elementos y Bloques)</h2>
+                <p>Pasa el cursor o pulsa en cada elemento para consultar sus datos esenciales para la EVAU.</p>
+                
+                <div class="ptable-grid" id="pTableContainer">
+                    <!-- Generado dinámicamente con JavaScript -->
+                </div>
+
+                <div id="elemDetailBox" class="result-box" style="margin-top: 15px;">
+                    <h3 id="detName">Selecciona un elemento</h3>
+                    <p id="detData">Haz clic sobre cualquier elemento de la tabla superior para ver su configuración electrónica y tendencias[cite: 3].</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 5: QUIZ DE AUTOEVALUACIÓN -->
+        <div id="quiz" class="tab-content">
+            <div class="card">
+                <h2>Autoevaluación de Conceptos Clave EVAU</h2>
+                <div id="quizContainer">
+                    <!-- Pregunta 1 -->
+                    <div style="margin-bottom: 1.5rem;">
+                        <p><strong>1. ¿Por qué la segunda energía de ionización del Sodio ($Z=11$) es drásticamente superior a la primera?</strong></p>
+                        <div class="quiz-option" onclick="checkQuiz(this, false)">A) Porque el radio atómico aumenta al formar el catión Na+.</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, true)">B) Porque la 2ª ionización implica arrancar un e⁻ de una capa interna completa (n=2) muy estable y cercana al núcleo.</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, false)">C) Porque disminuye la carga nuclear efectiva sobre la corteza.</div>
+                    </div>
+
+                    <!-- Pregunta 2 -->
+                    <div style="margin-bottom: 1.5rem;">
+                        <p><strong>2. ¿Cuál es la configuración electrónica fundamental correcta para el Cromo ($Z=24$)?</strong></p>
+                        <div class="quiz-option" onclick="checkQuiz(this, false)">A) [Ar] 4s² 3d⁴</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, true)">B) [Ar] 4s¹ 3d⁵</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, false)">C) [Ar] 4s⁰ 3d⁶</div>
+                    </div>
+
+                    <!-- Pregunta 3 -->
+                    <div style="margin-bottom: 1.5rem;">
+                        <p><strong>3. En el efecto fotoeléctrico, si se duplica la INTENSIDAD de la luz incidente (manteniendo $f > f_0$ constante):</strong></p>
+                        <div class="quiz-option" onclick="checkQuiz(this, false)">A) Se duplica la velocidad máxima de los electrones emitidos.</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, false)">B) Se duplica la energía cinética máxima de los fotoelectrones.</div>
+                        <div class="quiz-option" onclick="checkQuiz(this, true)">C) Se duplica el número de electrones emitidos por unidad de tiempo.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- NAVEGACIÓN POR PESTAÑAS ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // --- DATOS ELEMENTOS TABLA PERIÓDICA (Z=1 a 36) ---
+        const elementos = [
+            {z:1, sym:'H', name:'Hidrógeno', group:1, period:1, block:'s', config:'1s¹'},
+            {z:2, sym:'He', name:'Helio', group:18, period:1, block:'s', config:'1s²'},
+            {z:3, sym:'Li', name:'Litio', group:1, period:2, block:'s', config:'1s² 2s¹'},
+            {z:4, sym:'Be', name:'Berilio', group:2, period:2, block:'s', config:'1s² 2s²'},
+            {z:5, sym:'B', name:'Boro', group:13, period:2, block:'p', config:'1s² 2s² 2p¹'},
+            {z:6, sym:'C', name:'Carbono', group:14, period:2, block:'p', config:'1s² 2s² 2p²'},
+            {z:7, sym:'N', name:'Nitrógeno', group:15, period:2, block:'p', config:'1s² 2s² 2p³'},
+            {z:8, sym:'O', name:'Oxígeno', group:16, period:2, block:'p', config:'1s² 2s² 2p⁴'},
+            {z:9, sym:'F', name:'Flúor', group:17, period:2, block:'p', config:'1s² 2s² 2p⁵'},
+            {z:10, sym:'Ne', name:'Neón', group:18, period:2, block:'p', config:'1s² 2s² 2p⁶'},
+            {z:11, sym:'Na', name:'Sodio', group:1, period:3, block:'s', config:'[Ne] 3s¹'},
+            {z:12, sym:'Mg', name:'Magnesio', group:2, period:3, block:'s', config:'[Ne] 3s²'},
+            {z:13, sym:'Al', name:'Aluminio', group:13, period:3, block:'p', config:'[Ne] 3s² 3p¹'},
+            {z:14, sym:'Si', name:'Silicio', group:14, period:3, block:'p', config:'[Ne] 3s² 3p²'},
+            {z:15, sym:'P', name:'Fósforo', group:15, period:3, block:'p', config:'[Ne] 3s² 3p³'},
+            {z:16, sym:'S', name:'Azufre', group:16, period:3, block:'p', config:'[Ne] 3s² 3p⁴'},
+            {z:17, sym:'Cl', name:'Cloro', group:17, period:3, block:'p', config:'[Ne] 3s² 3p⁵'},
+            {z:18, sym:'Ar', name:'Argón', group:18, period:3, block:'p', config:'[Ne] 3s² 3p⁶'},
+            {z:19, sym:'K', name:'Potasio', group:1, period:4, block:'s', config:'[Ar] 4s¹'},
+            {z:20, sym:'Ca', name:'Calcio', group:2, period:4, block:'s', config:'[Ar] 4s²'},
+            {z:21, sym:'Sc', name:'Escandio', group:3, period:4, block:'d', config:'[Ar] 4s² 3d¹'},
+            {z:22, sym:'Ti', name:'Titanio', group:4, period:4, block:'d', config:'[Ar] 4s² 3d²'},
+            {z:23, sym:'V', name:'Vanadio', group:5, period:4, block:'d', config:'[Ar] 4s² 3d³'},
+            {z:24, sym:'Cr', name:'Cromo', group:6, period:4, block:'d', config:'[Ar] 4s¹ 3d⁵ (Excepción)'},
+            {z:25, sym:'Mn', name:'Manganeso', group:7, period:4, block:'d', config:'[Ar] 4s² 3d⁵'},
+            {z:26, sym:'Fe', name:'Hierro', group:8, period:4, block:'d', config:'[Ar] 4s² 3d⁶'},
+            {z:27, sym:'Co', name:'Cobalto', group:9, period:4, block:'d', config:'[Ar] 4s² 3d⁷'},
+            {z:28, sym:'Ni', name:'Níquel', group:10, period:4, block:'d', config:'[Ar] 4s² 3d⁸'},
+            {z:29, sym:'Cu', name:'Cobre', group:11, period:4, block:'d', config:'[Ar] 4s¹ 3d¹⁰ (Excepción)'},
+            {z:30, sym:'Zn', name:'Cinc', group:12, period:4, block:'d', config:'[Ar] 4s² 3d¹⁰'},
+            {z:31, sym:'Ga', name:'Galio', group:13, period:4, block:'p', config:'[Ar] 4s² 3d¹⁰ 4p¹'},
+            {z:32, sym:'Ge', name:'Germanio', group:14, period:4, block:'p', config:'[Ar] 4s² 3d¹⁰ 4p²'},
+            {z:33, sym:'As', name:'Arsénico', group:15, period:4, block:'p', config:'[Ar] 4s² 3d¹⁰ 4p³'},
+            {z:34, sym:'Se', name:'Selenio', group:16, period:4, block:'p', config:'[Ar] 4s² 3d¹⁰ 4p⁴'},
+            {z:35, sym:'Br', name:'Bromo', group:17, period:4, block:'p', config:'[Ar] 4s² 3d¹⁰ 4p⁵'},
+            {z:36, sym:'Kr', name:'Kriptón', group:18, period:4, block:'p', config:'[Ar] 4s² 3d¹⁰ 4p⁶'}
+        ];
+
+        // --- RENDERIZADO TABLA PERIÓDICA ---
+        function renderPTable() {
+            const container = document.getElementById('pTableContainer');
+            container.innerHTML = '';
+
+            // Mapeo simplificado de coordenadas (Periodo 1 a 4)
+            for (let p = 1; p <= 4; p++) {
+                for (let g = 1; g <= 18; g++) {
+                    const el = elementos.find(e => e.period === p && e.group === g);
+                    if (el) {
+                        const box = document.createElement('div');
+                        box.className = `elem-box elem-${el.block}`;
+                        box.innerHTML = `<span style="font-size:0.65rem">${el.z}</span><span class="symbol">${el.sym}</span>`;
+                        box.onclick = () => showElementDetail(el);
+                        container.appendChild(box);
+                    } else {
+                        const empty = document.createElement('div');
+                        empty.className = 'empty-box';
+                        container.appendChild(empty);
+                    }
+                }
+            }
+        }
+
+        function showElementDetail(el) {
+            document.getElementById('detName').innerText = `${el.name} (${el.sym}) - Z = ${el.z}`;
+            document.getElementById('detData').innerHTML = `
+                <strong>Configuración electrónica:</strong> ${el.config}<br>
+                <strong>Ubicación:</strong> Grupo ${el.group}, Período ${el.period} (Bloque ${el.block.toUpperCase()})<br>
+                <strong>Ion más estable común:</strong> ${getIonEstable(el)}
+            `;
+            document.getElementById('elemDetailBox').style.display = 'block';
+        }
+
+        function getIonEstable(el) {
+            if (el.group === 1) return `${el.sym}⁺`;
+            if (el.group === 2) return `${el.sym}²⁺`;
+            if (el.group === 13) return `${el.sym}³⁺`;
+            if (el.group === 16) return `${el.sym}²⁻`;
+            if (el.group === 17) return `${el.sym}⁻`;
+            if (el.group === 18) return 'Gas Noble (Muy estable, no forma iones habituales)';
+            return 'Variable (Metal de transición)';
+        }
+
+        // --- HERRAMIENTA 1: CONFIGURACIÓN ELECTRÓNICA ---
+        function calcularConfiguracion() {
+            const z = parseInt(document.getElementById('inputZ').value);
+            const el = elementos.find(e => e.z === z);
+            
+            if (!el) {
+                alert('Introduce un número atómico entre 1 y 36.');
+                return;
+            }
+
+            document.getElementById('outNombre').innerText = `${el.name} (${el.sym})`;
+            document.getElementById('outConfig').innerText = el.config;
+            document.getElementById('outAbrev').innerText = el.config;
+            document.getElementById('outPeriodo').innerText = el.period;
+            document.getElementById('outGrupo').innerText = el.group;
+            document.getElementById('outBloque').innerText = el.block.toUpperCase();
+
+            // Calcular números cuánticos aproximados del e- diferenciador
+            let nc = "(n, l, ml, ms) -> ";
+            if (z === 24) nc += "(3, 2, 2, +1/2) [Cromo por anomalia 3d⁵]";
+            else if (z === 29) nc += "(3, 2, 2, -1/2) [Cobre por anomalia 3d¹⁰]";
+            else nc += `(n=${el.period}, l=${el.block === 's'?0:el.block === 'p'?1:2}, m_l, ±1/2)`;
+
+            document.getElementById('outNC').innerText = nc;
+            document.getElementById('resConfig').style.display = 'block';
+        }
+
+        // --- HERRAMIENTA 2: EFECTO FOTOELÉCTRICO ---
+        function calcularFotoelectrico() {
+            const h = 6.626e-34;
+            const c = 3.00e8;
+            const eV2J = 1.602e-19;
+            const m_e = 9.11e-31;
+
+            const w0_eV = parseFloat(document.getElementById('inputW0').value);
+            const lambda_nm = parseFloat(document.getElementById('inputLambda').value);
+
+            const w0_J = w0_eV * eV2J;
+            const lambda_m = lambda_nm * 1e-9;
+
+            const e_fot_J = (h * c) / lambda_m;
+            const e_fot_eV = e_fot_J / eV2J;
+
+            const f0 = w0_J / h;
+
+            document.getElementById('outEfot').innerText = e_fot_J.toExponential(3);
+            document.getElementById('outEfotEv').innerText = e_fot_eV.toFixed(2);
+            document.getElementById('outF0').innerText = f0.toExponential(3);
+
+            if (e_fot_J >= w0_J) {
+                const ec_J = e_fot_J - w0_J;
+                const ec_eV = ec_J / eV2J;
+                const vel = Math.sqrt((2 * ec_J) / m_e);
+
+                document.getElementById('outEmision').innerHTML = "<strong style='color:var(--success)'>SÍ hay emisión fotoeléctrica</strong> (E_fotón ≥ W₀)";
+                document.getElementById('outEc').innerText = ec_J.toExponential(3);
+                document.getElementById('outEcEv').innerText = ec_eV.toFixed(2);
+                document.getElementById('outVel').innerText = vel.toLocaleString('es-ES', {maximumFractionDigits:0});
+            } else {
+                document.getElementById('outEmision').innerHTML = "<strong style='color:red'>NO hay emisión</strong> (E_fotón < W₀, la energía del fotón es insuficiente)";
+                document.getElementById('outEc').innerText = "0";
+                document.getElementById('outEcEv').innerText = "0";
+                document.getElementById('outVel').innerText = "0";
+            }
+
+            document.getElementById('resFoto').style.display = 'block';
+        }
+
+        // --- HERRAMIENTA 3: RYDBERG / BOHR ---
+        function calcularRydberg() {
+            const R_H = 1.097e7; // m^-1
+            const h = 6.626e-34;
+            const c = 3.00e8;
+            const eV2J = 1.602e-19;
+            const N_A = 6.022e23;
+
+            const n1 = parseInt(document.getElementById('inputN1').value);
+            const n2 = parseInt(document.getElementById('inputN2').value);
+
+            if (n1 === n2) {
+                alert("Los niveles n1 y n2 deben ser diferentes.");
+                return;
+            }
+
+            const n_lower = Math.min(n1, n2);
+            const n_higher = Math.max(n1, n2);
+
+            const proceso = n1 < n2 ? "Absorción de fotón (Excitación)" : "Emisión de fotón (Desexcitación)";
+            
+            let serie = "Otra";
+            if (n_lower === 1) serie = "Lyman (Ultravioleta)";
+            else if (n_lower === 2) serie = "Balmer (Visible)";
+            else if (n_lower === 3) serie = "Paschen (Infrarrojo)";
+            else if (n_lower === 4) serie = "Brackett (Infrarrojo)";
+            else if (n_lower === 5) serie = "Pfund (Infrarrojo)";
+
+            const inv_lambda = R_H * ((1 / (n_lower * n_lower)) - (1 / (n_higher * n_higher)));
+            const lambda_m = 1 / inv_lambda;
+            const lambda_nm = lambda_m * 1e9;
+
+            const deltaE_J = (h * c) / lambda_m;
+            const deltaE_eV = deltaE_J / eV2J;
+            const e_mol_kJ = (deltaE_J * N_A) / 1000;
+
+            document.getElementById('outProceso').innerText = proceso;
+            document.getElementById('outSerie').innerText = serie;
+            document.getElementById('outDeltaE').innerText = deltaE_J.toExponential(3);
+            document.getElementById('outDeltaEEv').innerText = deltaE_eV.toFixed(2);
+            document.getElementById('outEmol').innerText = e_mol_kJ.toFixed(2);
+            document.getElementById('outLambdaRyd').innerText = lambda_nm.toFixed(1);
+
+            document.getElementById('resRydberg').style.display = 'block';
+        }
+
+        // --- QUIZ INTERACTIVO ---
+        function checkQuiz(elem, isCorrect) {
+            const parent = elem.parentElement;
+            const options = parent.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('correct', 'incorrect'));
+
+            if (isCorrect) {
+                elem.classList.add('correct');
+            } else {
+                elem.classList.add('incorrect');
+            }
+        }
+
+        // Inicializar al cargar la página
+        window.onload = function() {
+            renderPTable();
+        };
+    </script>
+</body>
+</html><div class="accordion-item">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+        📍 2023-Ordinaria: Anomalía en la Energía de Ionización (N vs O)
+    </div>
+    <div class="accordion-content">
+        <p><strong>Cuestión:</strong> Justifique por qué la primera energía de ionización del Nitrógeno (Z=7) es mayor que la del Oxígeno (Z=8), a pesar de que el oxígeno tiene mayor carga nuclear efectiva y está más a la derecha en el período.</p>
+        <hr><br>
+        <p><strong>Solución Desarrollada:</strong><br>
+        - $N (Z=7): 1s^2 2s^2 2p^3$. Los tres orbitales p están semillenos, aportando una estabilidad cuántica adicional (simetría esférica de carga).<br>
+        - $O (Z=8): 1s^2 2s^2 2p^4$. Al perder un electrón, alcanza la configuración semillena $2p^3$, muy estable.<br>
+        <strong>Conclusión:</strong> Arrancar el electrón del nitrógeno rompe una configuración excepcionalmente estable, requiriendo más energía. En el oxígeno, la pérdida del electrón minimiza la repulsión interelectrónica del orbital doblemente ocupado, favoreciendo el proceso.</p>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <div class="accordion-header" onclick="toggleAccordion(this)">
+        📍 2022-Extraordinaria: Efecto Fotoeléctrico y Potencial
+    </div>
+    <div class="accordion-content">
+        <p><strong>Cuestión:</strong> El trabajo de extracción de una placa de potasio es $2.25 \text{ eV}$. Si se ilumina con radiación ultravioleta de $\lambda = 350 \text{ nm}$, calcule:<br>
+        a) La frecuencia umbral del metal.<br>
+        b) La energía cinética máxima de los electrones emitidos (en eV).</p>
+        <hr><br>
+        <p><strong>Solución Desarrollada:</strong><br>
+        a) Conversión inicial: $W_0 = 2.25 \text{ eV} \cdot (1.602 \cdot 10^{-19} \text{ J/eV}) = 3.60 \cdot 10^{-19} \text{ J}$.<br>
+        $f_0 = \frac{W_0}{h} = \frac{3.60 \cdot 10^{-19} \text{ J}}{6.626 \cdot 10^{-34} \text{ J s}} = 5.43 \cdot 10^{14} \text{ Hz}$.<br><br>
+        b) Energía del fotón incidente: $E = \frac{h \cdot c}{\lambda} = \frac{6.626 \cdot 10^{-34} \cdot 3.00 \cdot 10^8}{350 \cdot 10^{-9}} = 5.68 \cdot 10^{-19} \text{ J}$.<br>
+        Aplicando la ecuación de Einstein: $E_{c,\text{máx}} = E - W_0 = (5.68 - 3.60) \cdot 10^{-19} \text{ J} = 2.08 \cdot 10^{-19} \text{ J}$.<br>
+        Pasando a eV: $E_{c,\text{máx}} = \frac{2.08 \cdot 10^{-19} \text{ J}}{1.602 \cdot 10^{-19} \text{ J/eV}} = 1.30 \text{ eV}$.</p>
+    </div>
+</div>
+<!-- Pregunta 7 -->
+<div style="margin-bottom: 1.5rem;">
+    <p><strong>7. ¿Por qué el radio atómico disminuye al avanzar de izquierda a derecha en un mismo período?</strong></p>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">A) Porque aumenta el número cuántico principal n y la cantidad de capas electrónicas.</div>
+    <div class="quiz-option" onclick="checkQuiz(this, true)">B) Porque aumenta la carga nuclear efectiva (Z_ef) atrayendo la corteza con más fuerza sin aumentar apenas el apantallamiento.</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">C) Porque disminuye el número de protones en el núcleo atómico.</div>
+</div>
+
+<!-- Pregunta 8 -->
+<div style="margin-bottom: 1.5rem;">
+    <p><strong>8. Un elemento neutro con configuración electrónica externa 3s² 3p⁴ se ubica en:</strong></p>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">A) Período 3, Grupo 14 (Carbonoideos).</div>
+    <div class="quiz-option" onclick="checkQuiz(this, true)">B) Período 3, Grupo 16 (Anfígenos / Calcógenos).</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">C) Período 4, Grupo 16 (Anfígenos / Calcógenos).</div>
+</div>
+
+<!-- Pregunta 9 -->
+<div style="margin-bottom: 1.5rem;">
+    <p><strong>9. ¿Cuál de las siguientes combinaciones de números cuánticos (n, l, m_l, m_s) es válida para un electrón en un orbital 3d?</strong></p>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">A) (3, 1, 0, +1/2)</div>
+    <div class="quiz-option" onclick="checkQuiz(this, true)">B) (3, 2, -2, -1/2)</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">C) (3, 3, +1, +1/2)</div>
+</div>
+
+<!-- Pregunta 10 -->
+<div style="margin-bottom: 1.5rem;">
+    <p><strong>10. ¿Por qué razón el subnivel orbital "2d" NO es físicamente posible?</strong></p>
+    <div class="quiz-option" onclick="checkQuiz(this, true)">A) Porque para el nivel n = 2, los valores permitidos de l son únicamente 0 (s) y 1 (p).</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">B) Porque viola la Regla de Máxima Multiplicidad de Hund.</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">C) Porque el número cuántico de espín m_s solo admite los valores +1/2 y -1/2.</div>
+</div>
+
+<!-- Pregunta 11 -->
+<div style="margin-bottom: 1.5rem;">
+    <p><strong>11. ¿Cuál es el número de electrones desapareados en el estado fundamental de un átomo de Cobre (Z=29)?</strong></p>
+    <div class="quiz-option" onclick="checkQuiz(this, true)">A) 1 electrón, debido a su configuración anómala [Ar] 4s¹ 3d¹⁰.</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">B) 2 electrones, según la regla teórica de Aufbau [Ar] 4s² 3d⁹.</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">C) 0 electrones, porque posee todos sus orbitales llenos.</div>
+</div>
+
+<!-- Pregunta 12 -->
+<div style="margin-bottom: 1.5rem;">
+    <p><strong>12. En el efecto fotoeléctrico, si se incrementa la FRECUENCIA de la radiación incidente por encima de la frecuencia umbral f₀ (manteniendo constante la intensidad):</strong></p>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">A) Aumenta el número de electrones emitidos por segundo, pero no su velocidad.</div>
+    <div class="quiz-option" onclick="checkQuiz(this, true)">B) Aumenta la energía cinética máxima de los fotoelectrones emitidos.</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">C) Disminuye el trabajo de extracción (W₀) característico del metal.</div>
+</div>
+
+<!-- Pregunta 13 -->
+<div style="margin-bottom: 1.5rem;">
+    <p><strong>13. Ordena de MENOR a MAYOR radio iónico las siguientes especies isoelectrónicas: N³⁻, F⁻, Na⁺, Mg²⁺.</strong></p>
+    <div class="quiz-option" onclick="checkQuiz(this, true)">A) Mg²⁺ < Na⁺ < F⁻ < N³⁻</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">B) N³⁻ < F⁻ < Na⁺ < Mg²⁺</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">C) F⁻ < N³⁻ < Mg²⁺ < Na⁺</div>
+</div>
+
+<!-- Pregunta 14 -->
+<div style="margin-bottom: 1.5rem;">
+    <p><strong>14. La Regla de Máxima Multiplicidad de Hund establece que:</strong></p>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">A) Dos electrones de un mismo átomo no pueden tener sus 4 números cuánticos iguales.</div>
+    <div class="quiz-option" onclick="checkQuiz(this, true)">B) En orbitales de la misma energía (degenerados), los electrones se distribuyen ocupando el mayor número de orbitales posibles con espines paralelos.</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">C) Los electrones van ocupando los orbitales en orden creciente de su nivel de energía (n + l).</div>
+</div>
+
+<!-- Pregunta 15 -->
+<div style="margin-bottom: 1.5rem;">
+    <p><strong>15. ¿Qué ecuación representa la definición formal de la Primera Energía de Ionización (E_i) de un elemento X?</strong></p>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">A) X(s) → X⁺(g) + e⁻</div>
+    <div class="quiz-option" onclick="checkQuiz(this, true)">B) X(g) + E_i → X⁺(g) + e⁻</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">C) X(g) + e⁻ → X⁻(g) + E_i</div>
+</div>
+
+<!-- Pregunta 16 -->
+<div style="margin-bottom: 1.5rem;">
+    <p><strong>16. ¿Cuál es la longitud de onda asociada (De Broglie) de una partícula de masa m y velocidad v?</strong></p>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">A) λ = h · m · v</div>
+    <div class="quiz-option" onclick="checkQuiz(this, true)">B) λ = h / (m · v)</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">C) λ = (m · v) / h</div>
+</div>
+
+<!-- Pregunta 17 -->
+<div style="margin-bottom: 1.5rem;">
+    <p><strong>17. ¿En qué región del espectro electromagnético se emiten las líneas de la Serie de Balmer (transición a n_i = 2) del hidrógeno?</strong></p>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">A) Ultravioleta lejano.</div>
+    <div class="quiz-option" onclick="checkQuiz(this, true)">B) Región del Visible (y parte del UV cercano).</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">C) Infrarrojo lejano.</div>
+</div>
+
+<!-- Pregunta 18 -->
+<div style="margin-bottom: 1.5rem;">
+    <p><strong>18. ¿Por qué el tamaño de un catión (Xⁿ⁺) es SIEMPRE menor que el de su átomo neutro de origen (X)?</strong></p>
+    <div class="quiz-option" onclick="checkQuiz(this, true)">A) Porque al perder electrones disminuye la repulsión interelectrónica y aumenta la carga nuclear efectiva por electrón sobrante.</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">B) Porque la pérdida de electrones provoca un aumento automático del número de protones en el núcleo.</div>
+    <div class="quiz-option" onclick="checkQuiz(this, false)">C) Porque el apantallamiento de las capas internas aumenta al perder electrones de valencia.</div>
+</div>
